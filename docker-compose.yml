@@ -1,11 +1,11 @@
-version: '3'
+version: '3.8'
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        N8N_VERSION: 1.27.3
+        N8N_VERSION: 1.29.1
     ports:
       - 5678:5678
     # 環境変数
@@ -15,9 +15,9 @@ services:
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE
-      - DB_POSTGRESDB_USER
-      - DB_POSTGRESDB_PASSWORD
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
       - N8N_HOST
       - WEBHOOK_URL
       - N8N_EDITOR_BASE_URL
@@ -36,19 +36,21 @@ services:
       - "host.docker.internal:host-gateway"
 
   postgres-init:
-    image: postgres:11
+    image: postgres:16
     volumes:
       - ./db_storage:/var/lib/postgresql/data
+      - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
     entrypoint:
       - sh
       - -c
       - |
         chown -R 2000:2000 /var/lib/postgresql/data
+        chmod +x /docker-entrypoint-initdb.d/init-data.sh
   postgres:
     depends_on:
       postgres-init:
         condition: service_completed_successfully
-    image: postgres:11
+    image: postgres:16
     restart: always
     environment:
       - POSTGRES_USER
