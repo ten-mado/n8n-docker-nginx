@@ -5,5 +5,6 @@ if [ -d /root/.n8n ] ; then
   chown -R node /root/.n8n
   ln -s /root/.n8n /home/node/
 fi
+cp -R /additional_modules/node_modules /node_modules
 
 exec su-exec node n8n
