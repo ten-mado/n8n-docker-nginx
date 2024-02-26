@@ -18,6 +18,7 @@ services:
     environment:
       - N8N_PROTOCOL=https
       - N8N_LOG_LEVEL=debug
+      - N8N_PAYLOAD_SIZE_MAX=100
       - NODE_FUNCTION_ALLOW_BUILTIN=*
       - NODE_FUNCTION_ALLOW_EXTERNAL=*
       - DB_TYPE=postgresdb
