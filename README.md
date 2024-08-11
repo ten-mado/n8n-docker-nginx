@@ -1,4 +1,5 @@
-# n8n-docker-nginx
+# ~n8n-docker-nginx~ n8n-docker-traefik
+n8n + Traefik(Let's Encrypt) + PostgreSQL
 
 ## Usage
 ```shell
